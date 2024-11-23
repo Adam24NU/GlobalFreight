@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="main-page"
+	 style="background-image: url('{{ url_for('static', filename='images/background.jpg') }}'); background-size: cover; background-position: center; height: 100vh;">
+	<div class="d-flex flex-column justify-content-center align-items-center text-center text-white"
+		 style="height: 100%;">
+		<h1>Welcome to Global Freight</h1>
+		<p>Your trusted logistics partner for seamless shipment tracking and booking.</p>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="interactive-block">
+					<h3>Track Shipments</h3>
+					<a href="/track" class="btn btn-primary">Track</a>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="interactive-block">
+					<h3>Book Shipments</h3>
+					<a href="/book" class="btn btn-primary">Book</a>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="interactive-block">
+					<h3>Contact Us</h3>
+					<a href="/contact" class="btn btn-primary">Contact</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

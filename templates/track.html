@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+	<h2>Track Your Shipment</h2>
+	<form method="POST" class="mt-4">
+		<div class="mb-3">
+			<label for="shipment_id" class="form-label">Shipment ID</label>
+			<input type="text" id="shipment_id" name="shipment_id" class="form-control" required>
+		</div>
+		<button type="submit" class="btn btn-primary">Track</button>
+	</form>
+
+	<!-- Display tracking results if available -->
+	{% if tracking_result %}
+	<div class="mt-5">
+		<h3>Shipment Details:</h3>
+		<p><strong>Shipment ID:</strong> {{ tracking_result.id }}</p>
+		<p><strong>Status:</strong> {{ tracking_result.status }}</p>
+		<p><strong>Estimated Delivery:</strong> {{ tracking_result.ETA }}</p>
+	</div>
+	{% endif %}
+</div>
+{% endblock %}
