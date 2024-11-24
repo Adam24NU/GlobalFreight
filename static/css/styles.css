@@ -42,24 +42,48 @@ body {
 	background-position: center;
 }
 
-/* Hide the navbar by default */
+/* Navbar styles */
 .navbar {
-	transition: transform 0.3s ease;
-	transform: translateY(-100%);
-	position: fixed;
-	width: 100%;
-	z-index: 999;
-	height: 80px;
-	font-size: 1.2rem;
-	background-color: var(--primary-color); /* Primary color */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    height: 100px; /* Increased height */
+    font-size: 1.4rem; /* Increased font size for links */
+    background-color: var(--primary-color);
+    padding: 0 20px; /* Add padding for better spacing */
+    transition: background-color 0.3s ease, height 0.3s ease; /* Smooth transitions */
 }
 
-/* Show the navbar on hover */
-.navbar:hover {
-	transform: translateY(0);
+/* Adjust logo size */
+.navbar-brand img {
+    height: 100px; /* Increased logo size */
 }
 
-/* Change hover color for navbar links */
+/* Adjust spacing for navbar links */
+.navbar-nav .nav-link {
+    padding: 10px 15px; /* Increased padding */
+}
+
+/* Navbar hover effects */
 .navbar-nav .nav-link:hover {
-	color: var(--secondary-color); /* Orange */
+    color: black; /* Change color on hover */
 }
+
+/* Navbar on hover */
+.navbar:hover {
+    background-color: var(--secondary-color); /* Optional hover effect for navbar */
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .navbar {
+        height: 80px; /* Slightly smaller on smaller screens */
+        font-size: 1.2rem;
+    }
+    .navbar-brand img {
+        height: 60px;
+    }
+}
+
+

@@ -1,8 +1,10 @@
+from flask import Flask, render_template, request, redirect, url_for, session
+
 import json
 import logging
 import os
 
-from flask import Flask, render_template, request, redirect, url_for, session
+
 
 # Configure logging
 logging.basicConfig(level=logging.ERROR)
@@ -111,15 +113,11 @@ def logout():
 	session.pop('user_id', None)
 	return redirect(url_for('index'))
 
-# Test template rendering
-@app.route('/test-template')
-def test_template():
-	return render_template('register.html')
 
-# Test static file serving
+
 @app.route('/test-static')
 def test_static():
-	return url_for('static', filename='css/styles.css')
+    return url_for('static', filename='css/styles.css')
 
 
 if __name__ == '__main__':
