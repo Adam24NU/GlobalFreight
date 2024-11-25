@@ -15,21 +15,25 @@
 			</div>
 		</div>
 
-		<!-- Booking Information -->
-		<div class="col-md-4">
-			<div class="card p-3">
-				<h4>Booking Information</h4>
-				{% if bookings %}
-				<ul>
-					{% for booking in bookings %}
-					<li><strong>Shipment ID:</strong> {{ booking.shipment_id }} | {{ booking.details }}</li>
-					{% endfor %}
-				</ul>
-				{% else %}
-				<p>No bookings found.</p>
-				{% endif %}
-				<a href="/book" class="btn btn-primary mt-2">Create New Booking</a>
+		<div class="container my-5">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">My Bookings</h2>
+
+			<!-- Display Bookings -->
+			{% if bookings %}
+			<div class="list-group">
+				{% for booking in bookings %}
+				<div class="list-group-item mb-3 p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+					<h5><strong>Shipment Date:</strong> {{ booking.shipment_details.shipment_date }}</h5>
+					<p><strong>From:</strong> {{ booking.shipment_details.departure_port }}</p>
+					<p><strong>To:</strong> {{ booking.shipment_details.destination_port }}</p>
+					<p><strong>Container Type:</strong> {{ booking.shipment_details.container_type }}</p>
+					<a href="{{ url_for('view_booking', booking_id=booking.id) }}" class="btn btn-primary btn-sm">View Details</a>
+				</div>
+				{% endfor %}
 			</div>
+			{% else %}
+			<p class="text-center">You have no bookings yet.</p>
+			{% endif %}
 		</div>
 
 		<!-- Payment Information -->

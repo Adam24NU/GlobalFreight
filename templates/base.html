@@ -23,37 +23,32 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/track">Track Shipment</a>
                 </li>
-                {% if session.get('user_id') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                    <a class="nav-link" href="/book" >Book Shipment</a>
                 </li>
-                {% endif %}
             </ul>
             <ul class="navbar-nav">
                 {% if session.get('user_id') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard" data-bs-toggle="tooltip" title="My Dashboard">
+                    <a class="nav-link" href="/dashboard" data-bs-toggle="tooltip" title="My Dashboard" style = "color: white;">
                         <i class="bi bi-person-circle"></i>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout" data-bs-toggle="tooltip" title="Logout">
+                    <a class="nav-link" href="/logout" data-bs-toggle="tooltip" title="Logout" style = "color: white;">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/login" data-bs-toggle="tooltip" title="Login">
+                    <a class="nav-link" href="/login" data-bs-toggle="tooltip" title="Login" style = "color: white;">
                         <i class="bi bi-box-arrow-in-right"></i>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/register" data-bs-toggle="tooltip" title="Register">
+                    <a class="nav-link" href="/register" data-bs-toggle="tooltip" title="Register" style = "color: white;">
                         <i class="bi bi-person-plus"></i>
                     </a>
                 </li>
@@ -80,3 +75,9 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+

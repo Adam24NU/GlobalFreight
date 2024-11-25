@@ -2,6 +2,7 @@
 	--primary-color: #002D72;
 	--secondary-color: #FF6600;
 	--accent-color: #FF0000;
+    --basic-color: black;
 }
 
 /* Apply colors */
@@ -33,14 +34,13 @@ body {
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Center alignment for main page */
 .main-page {
-	position: relative;
-	height: 100vh;
-	width: 100%;
-	background-size: cover;
-	background-position: center;
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
 }
+
 
 /* Navbar styles */
 .navbar {
@@ -57,7 +57,7 @@ body {
 
 /* Adjust logo size */
 .navbar-brand img {
-    height: 100px; /* Increased logo size */
+    height: 100px !important; /* Increased logo size */
 }
 
 /* Adjust spacing for navbar links */

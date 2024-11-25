@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "id": 1,
+        "user_id": 1,
+        "sender": {
+            "name": "Test_sender",
+            "email": "test_sender@gmail.com",
+            "phone": "07379813080",
+            "pickup_address": "Brighton Beach street "
+        },
+        "recipient": {
+            "name": "Test_recipient",
+            "email": "test_recipient@gmail.com",
+            "phone": "07379516040",
+            "delivery_address": "Pushkin street 08"
+        },
+        "shipment_details": {
+            "container_type": "40ft",
+            "weight": "24000",
+            "special_instructions": "",
+            "departure_port": "Edinburgh",
+            "destination_port": "Constanca",
+            "shipment_date": "2024-11-25"
+        }
+    }
+]

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 
 import json
 import logging
@@ -84,28 +84,101 @@ def track():
 
 @app.route('/book', methods=['GET', 'POST'])
 def book():
-	if request.method == 'POST':
-		bookings = load_data('bookings.json')
-		shipment_id = request.form['shipment_id']
-		user_id = session.get('user_id')
-		if not user_id:
-			return redirect(url_for('login'))
-		bookings.append(
-			{"id": len(bookings) + 1, "user_id": user_id, "shipment_id": shipment_id, "details": "Booking details"})
-		save_data('bookings.json', bookings)
-		return "Booking created successfully!"
-	return render_template('book.html')
+    if request.method == 'POST':
+        bookings = load_data('bookings.json')
+
+        # Ensure the user is logged in
+        user_id = session.get('user_id')
+        if not user_id:
+            return redirect(url_for('login'))
+
+        # Gather form data
+        sender_name = request.form['sender_name']
+        sender_email = request.form['sender_email']
+        sender_phone = request.form['sender_phone']
+        pickup_address = request.form['pickup_address']
+
+        recipient_name = request.form['recipient_name']
+        recipient_email = request.form['recipient_email']
+        recipient_phone = request.form['recipient_phone']
+        delivery_address = request.form['delivery_address']
+
+        container_type = request.form['container_type']
+        weight = request.form['weight']
+        special_instructions = request.form.get('special_instructions', '')  # Optional field
+        departure_port = request.form['departure_port']
+        destination_port = request.form['destination_port']
+        shipment_date = request.form['shipment_date']
+
+        # Create a new booking
+        new_booking = {
+            "id": len(bookings) + 1,
+            "user_id": user_id,
+            "sender": {
+                "name": sender_name,
+                "email": sender_email,
+                "phone": sender_phone,
+                "pickup_address": pickup_address
+            },
+            "recipient": {
+                "name": recipient_name,
+                "email": recipient_email,
+                "phone": recipient_phone,
+                "delivery_address": delivery_address
+            },
+            "shipment_details": {
+                "container_type": container_type,
+                "weight": weight,
+                "special_instructions": special_instructions,
+                "departure_port": departure_port,
+                "destination_port": destination_port,
+                "shipment_date": shipment_date
+            }
+        }
+
+        # Save the booking
+        bookings.append(new_booking)
+        save_data('bookings.json', bookings)
+
+        # Redirect to dashboard
+        return redirect(url_for('dashboard'))
+
+    return render_template('book.html')
+
+
+@app.route('/booking/<int:booking_id>')
+def view_booking(booking_id):
+    bookings = load_data('bookings.json')
+    booking = next((b for b in bookings if b['id'] == booking_id), None)
+
+    if not booking:
+        return "Booking not found.", 404
+
+    return render_template('booking_details.html', booking=booking)
+
 
 
 @app.route('/dashboard')
 def dashboard():
-	user_id = session.get('user_id')
-	if not user_id:
-		return redirect(url_for('login'))
-	users = load_data('users.json')
-	user = next((u for u in users if u['id'] == user_id), None)
-	bookings = load_data('bookings.json')
-	return render_template('dashboard.html', user=user, bookings=bookings)
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+
+    # Load user data
+    users = load_data('users.json')
+    user = next((u for u in users if u['id'] == user_id), None)
+
+    # Load bookings for this user
+    bookings = load_data('bookings.json')
+    user_bookings = [b for b in bookings if b['user_id'] == user_id]
+
+    return render_template('dashboard.html', user=user, bookings=user_bookings)
+
+
+@app.route('/ports')
+def ports():
+    ports = load_data('ports.json')
+    return jsonify(ports)
 
 
 @app.route('/logout')
@@ -113,11 +186,6 @@ def logout():
 	session.pop('user_id', None)
 	return redirect(url_for('index'))
 
-
-
-@app.route('/test-static')
-def test_static():
-    return url_for('static', filename='css/styles.css')
 
 
 if __name__ == '__main__':

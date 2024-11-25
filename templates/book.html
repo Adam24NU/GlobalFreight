@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">Book Your Container</h2>
+    <form method="POST" class="card p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 20px;">
+        <!-- Sender Information -->
+        <h4 class="mb-3">Sender Information</h4>
+        <div class="mb-3">
+            <label for="sender_name" class="form-label">Sender Name</label>
+            <input type="text" id="sender_name" name="sender_name" class="form-control" required placeholder="Your Full Name">
+        </div>
+        <div class="mb-3">
+            <label for="sender_email" class="form-label">Sender Email</label>
+            <input type="email" id="sender_email" name="sender_email" class="form-control" required placeholder="Your Email Address">
+        </div>
+        <div class="mb-3">
+            <label for="sender_phone" class="form-label">Sender Phone</label>
+            <input type="text" id="sender_phone" name="sender_phone" class="form-control" required placeholder="Your Phone Number" maxlength="20" pattern="\d*">
+        </div>
+        <div class="mb-3">
+            <label for="pickup_address" class="form-label">Pickup Address</label>
+            <textarea id="pickup_address" name="pickup_address" class="form-control" rows="2" required placeholder="Pickup Address"></textarea>
+        </div>
+
+        <!-- Recipient Information -->
+        <h4 class="mt-4 mb-3">Recipient Information</h4>
+        <div class="mb-3">
+            <label for="recipient_name" class="form-label">Recipient Name</label>
+            <input type="text" id="recipient_name" name="recipient_name" class="form-control" required placeholder="Recipient's Full Name">
+        </div>
+        <div class="mb-3">
+            <label for="recipient_email" class="form-label">Recipient Email</label>
+            <input type="email" id="recipient_email" name="recipient_email" class="form-control" required placeholder="Recipient's Email Address">
+        </div>
+        <div class="mb-3">
+            <label for="recipient_phone" class="form-label">Recipient Phone</label>
+            <input type="text" id="recipient_phone" name="recipient_phone" class="form-control" required placeholder="Recipient's Phone Number" maxlength="20" pattern="\d*">
+        </div>
+        <div class="mb-3">
+            <label for="delivery_address" class="form-label">Delivery Address</label>
+            <textarea id="delivery_address" name="delivery_address" class="form-control" rows="2" required placeholder="Delivery Address"></textarea>
+        </div>
+
+        <!-- Shipment Details -->
+        <h4 class="mt-4 mb-3">Shipment Details</h4>
+        <div class="mb-3">
+            <label for="container_type" class="form-label">Container Type</label>
+            <select id="container_type" name="container_type" class="form-select" required>
+                <option value="20ft">20ft Standard</option>
+                <option value="40ft">40ft Standard</option>
+                <option value="refrigerated">Refrigerated</option>
+                <option value="open-top">Open Top</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="weight" class="form-label">Estimated Weight (kg)</label>
+            <input type="number" id="weight" name="weight" class="form-control" required placeholder="Weight of Goods">
+        </div>
+        <div class="mb-3">
+            <label for="special_instructions" class="form-label">Special Instructions (Optional)</label>
+            <textarea id="special_instructions" name="special_instructions" class="form-control" rows="2" placeholder="Add any special instructions"></textarea>
+        </div>
+
+        <!-- Route Information -->
+        <h4 class="mt-4 mb-3">Route Information</h4>
+        <div class="mb-3">
+            <label for="departure_port" class="form-label">Departure Port</label>
+            <select id="departure_port" name="departure_port" class="form-select" required>
+                <option value="" disabled selected>Select a port</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="destination_port" class="form-label">Destination Port</label>
+            <select id="destination_port" name="destination_port" class="form-select" required>
+                <option value="" disabled selected>Select a port</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="shipment_date" class="form-label">Preferred Shipment Date</label>
+            <input type="date" id="shipment_date" name="shipment_date" class="form-control" required>
+        </div>
+
+        <!-- Booking Button -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary w-50" style="height: 50px; font-size: 1.2rem;">Book Now</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Populate dropdowns with ports
+    fetch('/ports')
+        .then(response => response.json())
+        .then(ports => {
+            const departureSelect = document.getElementById('departure_port');
+            const destinationSelect = document.getElementById('destination_port');
+
+            ports.forEach(port => {
+                const option1 = document.createElement('option');
+                const option2 = document.createElement('option');
+                option1.value = port;
+                option2.value = port;
+                option1.textContent = port;
+                option2.textContent = port;
+                departureSelect.appendChild(option1);
+                destinationSelect.appendChild(option2);
+            });
+        });
+</script>
+
+{% endblock %}

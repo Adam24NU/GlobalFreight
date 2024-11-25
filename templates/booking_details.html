@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">Booking Details</h2>
+    <div class="card p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 20px;">
+        <h4>Sender Information</h4>
+        <p><strong>Name:</strong> {{ booking.sender.name }}</p>
+        <p><strong>Email:</strong> {{ booking.sender.email }}</p>
+        <p><strong>Phone:</strong> {{ booking.sender.phone }}</p>
+        <p><strong>Pickup Address:</strong> {{ booking.sender.pickup_address }}</p>
+
+        <h4>Recipient Information</h4>
+        <p><strong>Name:</strong> {{ booking.recipient.name }}</p>
+        <p><strong>Email:</strong> {{ booking.recipient.email }}</p>
+        <p><strong>Phone:</strong> {{ booking.recipient.phone }}</p>
+        <p><strong>Delivery Address:</strong> {{ booking.recipient.delivery_address }}</p>
+
+        <h4>Shipment Details</h4>
+        <p><strong>Container Type:</strong> {{ booking.shipment_details.container_type }}</p>
+        <p><strong>Weight:</strong> {{ booking.shipment_details.weight }} kg</p>
+        <p><strong>Special Instructions:</strong> {{ booking.shipment_details.special_instructions }}</p>
+        <p><strong>Departure Port:</strong> {{ booking.shipment_details.departure_port }}</p>
+        <p><strong>Destination Port:</strong> {{ booking.shipment_details.destination_port }}</p>
+        <p><strong>Shipment Date:</strong> {{ booking.shipment_details.shipment_date }}</p>
+    </div>
+</div>
+{% endblock %}
