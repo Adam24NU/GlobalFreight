@@ -1,16 +1,68 @@
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 
 import json
 import logging
 import os
-
-
+import requests
 
 # Configure logging
 logging.basicConfig(level=logging.ERROR)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Ensure session functionality
+
+
+# Load the environment variables from the file
+load_dotenv("API_keys.env")
+
+# Access the variables
+MAERSK_CLIENT_ID = os.getenv("MAERSK_CLIENT_ID")
+MAERSK_CLIENT_SECRET = os.getenv("MAERSK_CLIENT_SECRET")
+
+# Debug to check if variables are loaded correctly
+print(f"Client ID: {MAERSK_CLIENT_ID}")
+print(f"Client Secret: {MAERSK_CLIENT_SECRET}")
+
+
+
+def get_access_token():
+    url = "https://api.maersk.com/customer-identity/oauth/v2/access_token"
+    payload = {
+        "grant_type": "client_credentials",
+        "client_id": MAERSK_CLIENT_ID,
+        "client_secret": MAERSK_CLIENT_SECRET,
+    }
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+
+    print("Requesting access token with the following payload:")
+    print(payload)
+
+    response = requests.post(url, headers=headers, data=payload)
+
+    print(f"Response status code: {response.status_code}")
+    print(f"Response body: {response.text}")
+
+    if response.status_code == 200:
+        token = response.json().get("access_token")
+        print(f"Access token retrieved: {token}")
+        return token
+    else:
+        raise Exception(f"Failed to get access token: {response.text}")
+
+
+
+
+def get_container_status(container_id):
+    token = get_access_token()
+    url = f"https://api.maersk.com/containers/{container_id}/tracking"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception(f"Failed to fetch container status: {response.text}")
 
 
 # Load data
@@ -74,12 +126,29 @@ def login():
 
 @app.route('/track', methods=['GET', 'POST'])
 def track():
-	tracking_result = None
-	if request.method == 'POST':
-		shipment_id = request.form['shipment_id']
-		shipments = load_data('shipments.json')
-		tracking_result = next((s for s in shipments if s['id'] == shipment_id), None)
-	return render_template('track.html', tracking_result=tracking_result)
+    tracking_result = None
+    if request.method == 'POST':
+        container_id = request.form['container_id']
+        app.logger.debug(f"Received container_id: {container_id}")
+        try:
+            tracking_result = get_container_status(container_id)
+            app.logger.debug(f"Tracking result: {tracking_result}")
+        except Exception as e:
+            tracking_result = {"error": str(e)}
+            app.logger.error(f"Error fetching tracking data: {e}")
+
+    return render_template('track.html', tracking_result=tracking_result)
+
+@app.route('/track_shipment/<int:shipment_id>')
+def track_shipment(shipment_id):
+    bookings = load_data('bookings.json')
+    booking = next((b for b in bookings if b['id'] == shipment_id), None)
+
+    if not booking:
+        return "Shipment not found.", 404
+
+    return render_template('track_shipment.html', booking=booking)
+
 
 
 @app.route('/book', methods=['GET', 'POST'])
@@ -157,6 +226,19 @@ def view_booking(booking_id):
     return render_template('booking_details.html', booking=booking)
 
 
+@app.route('/cancel_booking/<int:booking_id>', methods=['POST'])
+def cancel_booking(booking_id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+
+    bookings = load_data('bookings.json')
+    updated_bookings = [b for b in bookings if b['id'] != booking_id or b['user_id'] != user_id]
+
+    # Save the updated bookings back to the JSON file
+    save_data('bookings.json', updated_bookings)
+
+    return redirect(url_for('dashboard'))
 
 @app.route('/dashboard')
 def dashboard():
@@ -172,7 +254,11 @@ def dashboard():
     bookings = load_data('bookings.json')
     user_bookings = [b for b in bookings if b['user_id'] == user_id]
 
+    # Debugging: Print bookings
+    print("User Bookings:", user_bookings)
+
     return render_template('dashboard.html', user=user, bookings=user_bookings)
+
 
 
 @app.route('/ports')
@@ -192,4 +278,3 @@ if __name__ == '__main__':
 	if not os.path.exists("data"):
 		os.makedirs("data")
 	app.run(debug=True)
-

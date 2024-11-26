@@ -1,24 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-	<h2>Track Your Shipment</h2>
-	<form method="POST" class="mt-4">
-		<div class="mb-3">
-			<label for="shipment_id" class="form-label">Shipment ID</label>
-			<input type="text" id="shipment_id" name="shipment_id" class="form-control" required>
-		</div>
-		<button type="submit" class="btn btn-primary">Track</button>
-	</form>
+<div class="container my-5">
+    <h2 class="text-center mb-4">Track Your Shipment</h2>
+    <form method="POST" class="card p-4">
+        <div class="mb-3">
+            <label for="container_id" class="form-label">Container ID</label>
+            <input type="text" id="container_id" name="container_id" class="form-control" required>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Track</button>
+        </div>
+    </form>
 
-	<!-- Display tracking results if available -->
-	{% if tracking_result %}
-	<div class="mt-5">
-		<h3>Shipment Details:</h3>
-		<p><strong>Shipment ID:</strong> {{ tracking_result.id }}</p>
-		<p><strong>Status:</strong> {{ tracking_result.status }}</p>
-		<p><strong>Estimated Delivery:</strong> {{ tracking_result.ETA }}</p>
-	</div>
-	{% endif %}
+   {% if tracking_result %}
+    {% if tracking_result.error %}
+        <div class="alert alert-danger">{{ tracking_result.error }}</div>
+    {% else %}
+        <h4>Tracking Information:</h4>
+        <p><strong>Container ID:</strong> {{ tracking_result['container_id'] }}</p>
+        <p><strong>Status:</strong> {{ tracking_result['status'] }}</p>
+        <p><strong>Location:</strong> {{ tracking_result['location'] }}</p>
+    {% endif %}
+{% endif %}
+
 </div>
 {% endblock %}

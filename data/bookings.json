@@ -3,24 +3,24 @@
         "id": 1,
         "user_id": 1,
         "sender": {
-            "name": "Test_sender",
-            "email": "test_sender@gmail.com",
+            "name": "Adam ",
+            "email": "Test@gmail.com",
             "phone": "07379813080",
-            "pickup_address": "Brighton Beach street "
+            "pickup_address": "Brighton Beach"
         },
         "recipient": {
-            "name": "Test_recipient",
-            "email": "test_recipient@gmail.com",
-            "phone": "07379516040",
-            "delivery_address": "Pushkin street 08"
+            "name": "Mike",
+            "email": "Mike@gmail.com",
+            "phone": "07375426878",
+            "delivery_address": "Pushkin Street "
         },
         "shipment_details": {
             "container_type": "40ft",
-            "weight": "24000",
+            "weight": "25000",
             "special_instructions": "",
-            "departure_port": "Edinburgh",
-            "destination_port": "Constanca",
-            "shipment_date": "2024-11-25"
+            "departure_port": "Port of Dubai",
+            "destination_port": "Port of Rotterdam",
+            "shipment_date": "2024-11-30"
         }
     }
 ]

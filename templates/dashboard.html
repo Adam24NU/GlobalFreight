@@ -2,48 +2,52 @@
 
 {% block content %}
 <div class="container mt-5">
-	<h2>Dashboard</h2>
-	<div class="row mt-4">
-		<!-- Account Information -->
-		<div class="col-md-4">
-			<div class="card p-3">
-				<h4>Account Information</h4>
-				<p><strong>Name:</strong> {{ user.name }}</p>
-				<p><strong>Email:</strong> {{ user.email }}</p>
-				<a href="#" class="btn btn-primary">Update Profile</a>
-				<a href="#" class="btn btn-danger mt-2">Delete Account</a>
-			</div>
-		</div>
+    <!-- Dashboard Header -->
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">My Dashboard</h2>
 
-		<div class="container my-5">
-    <h2 class="text-center mb-4" style="color: var(--primary-color);">My Bookings</h2>
+    <div class="row mt-4">
+        <!-- Account Information -->
+        <div class="col-md-4">
+            <div class="card p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+                <h4>Account Information</h4>
+                <p><strong>Name:</strong> {{ user.name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <div class="d-flex flex-column">
+                    <a href="#" class="btn btn-primary mb-2">Update Profile</a>
+                    <a href="#" class="btn btn-danger">Delete Account</a>
+                </div>
+            </div>
+        </div>
 
-			<!-- Display Bookings -->
-			{% if bookings %}
-			<div class="list-group">
-				{% for booking in bookings %}
-				<div class="list-group-item mb-3 p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-					<h5><strong>Shipment Date:</strong> {{ booking.shipment_details.shipment_date }}</h5>
-					<p><strong>From:</strong> {{ booking.shipment_details.departure_port }}</p>
-					<p><strong>To:</strong> {{ booking.shipment_details.destination_port }}</p>
-					<p><strong>Container Type:</strong> {{ booking.shipment_details.container_type }}</p>
-					<a href="{{ url_for('view_booking', booking_id=booking.id) }}" class="btn btn-primary btn-sm">View Details</a>
-				</div>
-				{% endfor %}
-			</div>
-			{% else %}
-			<p class="text-center">You have no bookings yet.</p>
-			{% endif %}
-		</div>
+        <!-- Bookings Section -->
+        <div class="col-md-8">
+            <div class="card p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+                <h4 class="mb-3">My Bookings</h4>
 
-		<!-- Payment Information -->
-		<div class="col-md-4">
-			<div class="card p-3">
-				<h4>Payment Information</h4>
-				<p>No payment methods saved.</p>
-				<a href="#" class="btn btn-primary">Add Payment Method</a>
-			</div>
-		</div>
-	</div>
+                {% if bookings %}
+                <div class="list-group">
+                    {% for booking in bookings %}
+                    <div class="list-group-item mb-3 p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+                        <h5><strong>Shipment ID:</strong> {{ booking.id }}</h5>
+                        <p><strong>Shipment Date:</strong> {{ booking.shipment_details.shipment_date }}</p>
+                        <p><strong>From:</strong> {{ booking.shipment_details.departure_port }}</p>
+                        <p><strong>To:</strong> {{ booking.shipment_details.destination_port }}</p>
+                        <p><strong>Container Type:</strong> {{ booking.shipment_details.container_type }}</p>
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="{{ url_for('view_booking', booking_id=booking.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                            <a href="{{ url_for('track_shipment', shipment_id=booking.id) }}" class="btn btn-success btn-sm">Track Container</a>
+                            <form action="{{ url_for('cancel_booking', booking_id=booking.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel Booking</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-center">You have no bookings yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

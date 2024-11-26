@@ -87,3 +87,27 @@ body {
 }
 
 
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.btn {
+    border-radius: 20px;
+}
+
+.list-group-item {
+    border: none;
+    background-color: #f9f9f9;
+}
+
+.list-group-item h5, .list-group-item p {
+    margin-bottom: 0.5rem;
+}
+
+.list-group-item .btn {
+    margin-left: 10px;
+}
+
