@@ -260,6 +260,39 @@ def dashboard():
     return render_template('dashboard.html', user=user, bookings=user_bookings)
 
 
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    # Ensure the user is logged in
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+
+    # Load user data
+    users = load_data('users.json')
+    user = next((u for u in users if u['id'] == user_id), None)
+
+    if request.method == 'POST':
+        # Get form data
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+
+        # Update user data
+        user['name'] = name
+        user['email'] = email
+        user['password'] = password
+
+        # Save updated user data
+        save_data('users.json', users)
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('profile.html', user=user)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 
 @app.route('/ports')
 def ports():
@@ -271,6 +304,72 @@ def ports():
 def logout():
 	session.pop('user_id', None)
 	return redirect(url_for('index'))
+
+
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    # Ensure the user is logged in
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+
+    # Load user data
+    users = load_data('users.json')
+    bookings = load_data('bookings.json')
+
+    # Remove the user
+    updated_users = [u for u in users if u['id'] != user_id]
+    save_data('users.json', updated_users)
+
+    # Remove the user's bookings
+    updated_bookings = [b for b in bookings if b['user_id'] != user_id]
+    save_data('bookings.json', updated_bookings)
+
+    # Log the user out
+    session.pop('user_id', None)
+
+    # Optionally, log account deletion
+    logging.warning(f"User {user_id} and all associated data have been deleted.")
+
+    return redirect(url_for('index'))
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email']
+
+        # Load users data
+        users = load_data('users.json')
+        user = next((u for u in users if u['email'] == email), None)
+
+        if user:
+            # Redirect to reset password page with user's ID
+            return redirect(url_for('reset_password', user_id=user['id']))
+        else:
+            return "Error: Email not found.", 404
+
+    return render_template('forgot_password.html')
+
+
+@app.route('/reset_password/<int:user_id>', methods=['GET', 'POST'])
+def reset_password(user_id):
+    # Load user data
+    users = load_data('users.json')
+    user = next((u for u in users if u['id'] == user_id), None)
+
+    if not user:
+        return "Error: User not found.", 404
+
+    if request.method == 'POST':
+        new_password = request.form['password']
+
+        # Update the user's password
+        user['password'] = new_password
+        save_data('users.json', users)
+
+        return redirect(url_for('login'))
+
+    return render_template('reset_password.html', user=user)
 
 
 

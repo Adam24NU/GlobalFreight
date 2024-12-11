@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">Update Profile</h2>
+    <form method="POST" class="card p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 20px;">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" value="{{ user.password }}" class="form-control" required>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
