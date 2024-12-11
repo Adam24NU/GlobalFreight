@@ -2,27 +2,59 @@
 
 {% block content %}
 <div class="container my-5">
-    <h2 class="text-center mb-4">Track Your Shipment</h2>
-    <form method="POST" class="card p-4">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">Track Your Container</h2>
+
+    <!-- Search Form -->
+    <form method="POST" class="card p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 20px;">
         <div class="mb-3">
-            <label for="container_id" class="form-label">Container ID</label>
-            <input type="text" id="container_id" name="container_id" class="form-control" required>
+            <label for="container_id" class="form-label">Enter Container ID</label>
+            <input type="text" id="container_id" name="container_id" class="form-control" placeholder="e.g., MSKU4590343" required>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary">Track</button>
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 50%;">Track</button>
         </div>
     </form>
 
-   {% if tracking_result %}
-    {% if tracking_result.error %}
-        <div class="alert alert-danger">{{ tracking_result.error }}</div>
-    {% else %}
-        <h4>Tracking Information:</h4>
-        <p><strong>Container ID:</strong> {{ tracking_result['container_id'] }}</p>
-        <p><strong>Status:</strong> {{ tracking_result['status'] }}</p>
-        <p><strong>Location:</strong> {{ tracking_result['location'] }}</p>
-    {% endif %}
-{% endif %}
+    <!-- Tracking Result -->
+    {% if tracking_result %}
+        <div class="mt-5">
+            {% if tracking_result.error %}
+                <div class="alert alert-danger text-center">{{ tracking_result.error }}</div>
+            {% else %}
+                <div class="card p-4" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 20px;">
+                    <h4 class="text-center" style="color: var(--primary-color);">Tracking Information</h4>
+                    <ul class="list-group mt-3">
+                        <li class="list-group-item"><strong>Container ID:</strong> {{ tracking_result['container_id'] }}</li>
+                        <li class="list-group-item"><strong>Status:</strong> {{ tracking_result['status'] }}</li>
+                        <li class="list-group-item"><strong>From:</strong> {{ tracking_result['shipment_details']['departure_port'] }}</li>
+                        <li class="list-group-item"><strong>To:</strong> {{ tracking_result['shipment_details']['destination_port'] }}</li>
+                        <li class="list-group-item"><strong>ETA:</strong> {{ tracking_result['eta'] }}</li>
+                    </ul>
 
+                    <!-- Dynamic Status -->
+                    <div class="mt-4 text-center">
+                        {% if tracking_result.status == "Preparing" %}
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 25%;">Preparing</div>
+                            </div>
+                        {% elif tracking_result.status == "In Transit" %}
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 70%;">In Transit</div>
+                            </div>
+                        {% elif tracking_result.status == "Arriving Today" %}
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 90%;">Arriving Today</div>
+                            </div>
+                        {% elif tracking_result.status == "Delivered" %}
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%;">Delivered</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
+

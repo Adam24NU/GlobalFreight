@@ -1,1 +1,75 @@
-[]
+[
+    {
+        "id": 1,
+        "user_id": 1,
+        "sender": {
+            "name": "Test",
+            "email": "test@gmail.com",
+            "phone": "239492848824",
+            "pickup_address": "Edinburgh port "
+        },
+        "recipient": {
+            "name": "Test2",
+            "email": "test@gmai.com",
+            "phone": "173884784787",
+            "delivery_address": "Krakow street 21"
+        },
+        "shipment_details": {
+            "container_type": "open-top",
+            "weight": "14000",
+            "special_instructions": "",
+            "departure_port": "Port of Antwerp",
+            "destination_port": "Port of Dubai",
+            "shipment_date": "2024-12-12"
+        }
+    },
+    {
+        "id": 2,
+        "user_id": 1,
+        "sender": {
+            "name": "test4",
+            "email": "test4@gmail.com",
+            "phone": "23792393294334",
+            "pickup_address": "test4"
+        },
+        "recipient": {
+            "name": "test3",
+            "email": "test3@gmail.com",
+            "phone": "2379239329",
+            "delivery_address": "test"
+        },
+        "shipment_details": {
+            "container_type": "40ft",
+            "weight": "15500",
+            "special_instructions": "",
+            "departure_port": "Port of Shanghai",
+            "destination_port": "Port of Singapore",
+            "shipment_date": "2024-12-12"
+        }
+    },
+    {
+        "id": 3,
+        "container_id": "HCHQ844429",
+        "user_id": 1,
+        "sender": {
+            "name": "wiorioriw",
+            "email": "eewiiwiw@gmail.com",
+            "phone": "230422023",
+            "pickup_address": "12eca"
+        },
+        "recipient": {
+            "name": "oedicjsc",
+            "email": "eofwefjw@gmail.com",
+            "phone": "2394293992",
+            "delivery_address": "wekfwkefkjw"
+        },
+        "shipment_details": {
+            "container_type": "20ft",
+            "weight": "238329",
+            "special_instructions": "",
+            "departure_port": "Port of Los Angeles",
+            "destination_port": "Port of New York",
+            "shipment_date": "2024-12-13"
+        }
+    }
+]
